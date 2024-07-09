@@ -9,11 +9,21 @@ const MAX_WORDS_MSG = (maxLength: number) =>
     `At most ${maxLength} words are allowed`
 const NAME_MIN_WORDS = 2
 const NAME_MAX_WORDS = 4
+const AGE_MIN_LENGTH = 18
+const AGE_MAX_LENGTH = 99
+const AGE_MIN_MSG = `Age must be at least ${AGE_MIN_LENGTH}`
+const AGE_MAX_MSG = `Age must be at most ${AGE_MAX_LENGTH}`
+const IS_INTEGER_MSG = 'Age must be an integer number'
 
 // TASK 1:
-// - Implement additional validations for the age field.
-// - The minimum age should be 18 and the maximum age should be 99.
-// - Each validation should have a corresponding error message.
+// - Implement additional validations for the age field
+// - The minimum age should be 18 and the maximum age should be 99
+// - Each validation should have a corresponding error message
+
+// IMPLEMENTED:
+// Age limits -> MIN 18 ~ MAX 99
+// Age SHOULD be a String but the value of it treated as a number
+// Age MUST be an INTEGER
 
 export const validationSchema = object().shape({
     name: string()
@@ -33,6 +43,20 @@ export const validationSchema = object().shape({
             'isNumber',
             IS_NUMBER_MSG,
             (value: string) => !isNaN(Number(value)),
+        )
+        .test('isInteger', IS_INTEGER_MSG, (value: string) => {
+            const age = Number(value)
+            return Number.isInteger(age)
+        })
+        .test(
+            'minAge',
+            AGE_MIN_MSG,
+            (value: string) => Number(value) >= AGE_MIN_LENGTH,
+        )
+        .test(
+            'maxAge',
+            AGE_MAX_MSG,
+            (value: string) => Number(value) <= AGE_MAX_LENGTH,
         ),
     // TASK 3:
     // - Implement a validation rule for the 'interests' field.
