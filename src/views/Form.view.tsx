@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Button, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
 import { useUpdateAnswers } from '../api-hooks/useUpdateAnswers'
 import { CheckboxGroup } from '../components'
@@ -11,6 +12,7 @@ import { validationSchema } from './Form.config'
 
 export const FormView = () => {
     const answers = useAnswersStore(state => state.getAnswers())
+    const navigate = useNavigate()
 
     const [optionsCheck, setOptionsCheck] = useState<
         {
@@ -64,6 +66,7 @@ export const FormView = () => {
             age: formData.age,
             interests: formattedInterests,
         })
+        navigate('/table')
     })
 
     const handleToggleCheckbox = (checkOptions: any) => {
