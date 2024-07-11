@@ -14,6 +14,7 @@ export const FormView = () => {
     const answers = useAnswersStore(state => state.getAnswers())
     const navigate = useNavigate()
 
+    const [redirect, setRedirect] = useState<string>()
     const [optionsCheck, setOptionsCheck] = useState<
         {
             id: string
@@ -66,7 +67,10 @@ export const FormView = () => {
             age: formData.age,
             interests: formattedInterests,
         })
-        navigate('/table')
+        setRedirect('Redirecting...')
+        setTimeout(() => {
+            navigate('/table')
+        }, 1500)
     })
 
     const handleToggleCheckbox = (checkOptions: any) => {
@@ -157,7 +161,7 @@ export const FormView = () => {
                     disabled={!isValid}
                     onClick={onSubmit}
                 >
-                    Submit
+                    {redirect ? redirect : 'Submit'}
                 </Button>
             </Box>
         </div>
