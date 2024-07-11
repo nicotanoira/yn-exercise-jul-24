@@ -96,10 +96,14 @@ export const TableView = () => {
         >
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Link to={'/form'}>
-                    <EditIcon sx={{ color: 'grey' }} />
+                    <EditIcon sx={{ color: 'grey', padding: '0.5rem' }} />
                 </Link>
                 <DeleteIcon
-                    sx={{ color: 'grey', cursor: 'pointer' }}
+                    sx={{
+                        color: 'grey',
+                        cursor: 'pointer',
+                        padding: '0.5rem',
+                    }}
                     onClick={handleDelete}
                 />
             </div>
@@ -108,7 +112,7 @@ export const TableView = () => {
                     <TableHead>
                         <TableRow>
                             {tableHeaders.map((header, idx) => (
-                                <TableCell key={idx}>
+                                <TableCell key={idx} sx={{ fontWeight: 700 }}>
                                     {header.charAt(0).toUpperCase() +
                                         header.slice(1)}
                                 </TableCell>
