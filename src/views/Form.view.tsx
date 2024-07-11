@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Button, TextField } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import { useUpdateAnswers } from '../api-hooks/useUpdateAnswers'
@@ -11,6 +13,33 @@ import { validationSchema } from './Form.config'
 
 export const FormView = () => {
     const answers = useAnswersStore(state => state.getAnswers())
+
+    const [optionsCheck, setOptionsCheck] = useState<
+        {
+            id: string
+            label: string
+            checked: boolean
+        }[]
+    >([])
+
+    useEffect(() => {
+        // Transform answers.interests into the format expected by CheckboxGroup
+        const transformedOptions = answers.interests.map(interest => {
+            const [id, value] = Object.entries(interest)[0]
+            return { id, label: value.label, checked: value.isChecked }
+        })
+        setOptionsCheck(transformedOptions)
+    }, [answers.interests])
+
+    const transformInterests = (
+        interests: { id: string; label: string; checked: boolean }[],
+    ) =>
+        interests.map(interest => ({
+            [interest.id]: {
+                isChecked: interest.checked,
+                label: interest.label,
+            },
+        }))
 
     const {
         control,
@@ -24,13 +53,24 @@ export const FormView = () => {
     const updateAnswersMutation = useUpdateAnswers()
 
     const onSubmit = handleSubmit(formData => {
+        const formattedInterests = transformInterests(
+            formData.interests as {
+                id: string
+                label: string
+                checked: boolean
+            }[],
+        )
         updateAnswersMutation.mutate({
             name: formData.name,
             mail: formData.mail,
             age: formData.age,
-            interests: [],
+            interests: formattedInterests,
         })
     })
+
+    const handleToggleCheckbox = (checkOptions: any) => {
+        setOptionsCheck(checkOptions)
+    }
 
     return (
         <div id="form-view">
@@ -91,12 +131,25 @@ export const FormView = () => {
                     CheckboxGroup's options. This could be detrimental
                     to your final assessment.
                 */}
-                {/* <Controller
-                    render={() => (
+                <Controller
+                    name="interests"
+                    control={control}
+                    defaultValue={answers.interests}
+                    render={({ field: { onChange } }) => (
                         <CheckboxGroup
+                            id="interests"
+                            label="Interests"
+                            options={optionsCheck}
+                            onChange={checkedOptions => {
+                                handleToggleCheckbox(checkedOptions)
+                                // Ensure react-hook-form captures the change
+                                onChange(checkedOptions)
+                            }}
+                            helperText={errors.interests?.message || ''}
+                            error={Boolean(errors.interests?.message)}
                         />
                     )}
-                /> */}
+                />
                 <Button
                     variant="contained"
                     disabled={!isValid}
@@ -108,3 +161,6 @@ export const FormView = () => {
         </div>
     )
 }
+
+/* eslint-enable @typescript-eslint/no-unused-vars */
+/* eslint-enable prettier/prettier */

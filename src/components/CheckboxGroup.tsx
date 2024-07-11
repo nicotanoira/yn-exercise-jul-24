@@ -61,6 +61,7 @@ export const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
                                         id={checkboxId}
                                         onChange={internalOnChange}
                                         color={error ? 'error' : 'primary'}
+                                        checked={option.checked}
                                     />
                                 }
                             />
