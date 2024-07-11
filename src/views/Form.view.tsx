@@ -132,7 +132,7 @@ export const FormView = () => {
                 <Controller
                     name="interests"
                     control={control}
-                    defaultValue={answers.interests}
+                    defaultValue={optionsCheck}
                     render={({ field: { onChange } }) => (
                         <CheckboxGroup
                             id="interests"
