@@ -23,9 +23,9 @@ const createStore: StateCreator<AnswersStore> = (set, get) => ({
     ...initialState,
     setAnswers: answers => set(state => ({ ...state, ...answers })),
     getAnswers: () => ({
-        age: get().age,
         name: get().name,
         mail: get().mail,
+        age: get().age,
         interests: get().interests,
     }),
 })
