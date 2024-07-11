@@ -95,6 +95,7 @@ export const FormView = () => {
                 <Controller
                     name="age"
                     control={control}
+                    defaultValue={answers.age}
                     render={({ field: { onChange, value } }) => (
                         <TextField
                             label="Age"
