@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable prettier/prettier */
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, Button, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
@@ -161,6 +159,3 @@ export const FormView = () => {
         </div>
     )
 }
-
-/* eslint-enable @typescript-eslint/no-unused-vars */
-/* eslint-enable prettier/prettier */
