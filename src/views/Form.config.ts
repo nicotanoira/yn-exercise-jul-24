@@ -14,16 +14,12 @@ const AGE_MAX_LENGTH = 99
 const AGE_MIN_MSG = `Age must be at least ${AGE_MIN_LENGTH}`
 const AGE_MAX_MSG = `Age must be at most ${AGE_MAX_LENGTH}`
 const IS_INTEGER_MSG = 'Age must be an integer number'
+const INTERESTS_REQUIRED_MSG = 'Please select at least one interest'
 
 // TASK 1:
 // - Implement additional validations for the age field
 // - The minimum age should be 18 and the maximum age should be 99
 // - Each validation should have a corresponding error message
-
-// IMPLEMENTED:
-// Age limits -> MIN 18 ~ MAX 99
-// Age SHOULD be a String but the value of it treated as a number
-// Age MUST be an INTEGER
 
 export const validationSchema = object().shape({
     name: string()
@@ -62,5 +58,14 @@ export const validationSchema = object().shape({
     // - Implement a validation rule for the 'interests' field.
     // - The validation should ensure that at least one option is selected.
     // - If no option is selected, display an error message.
-    interests: mixed().notRequired(),
+    interests: mixed().test(
+        'atLeastOneInterest',
+        INTERESTS_REQUIRED_MSG,
+        function (value) {
+            if (!value || !Array.isArray(value)) {
+                return false
+            }
+            return value.some(interest => interest.checked === true)
+        },
+    ),
 })
